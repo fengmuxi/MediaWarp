@@ -71,6 +71,29 @@ func recgonizeStrmFileType(strmFilePath string) (constants.StrmFileType, any) {
 	return constants.UnknownStrm, nil
 }
 
+// 返回替换后的strm文件内容
+func replaceStrmUrl(strmUrl string) string {
+	logging.Debugf("输入的strm内容=> %s", strmUrl)
+	if len(config.HTTPStrm.PathMap) != 0 {
+		pathMap := make(map[string]string)
+		for _, path := range config.HTTPStrm.PathMap {
+			splits := strings.Split(path, "=>")
+			if len(splits) != 2 {
+				logging.Debugf("映射配置不规范: %s, 请使用 => 进行分割", path)
+			}
+			from, to := strings.TrimSpace(splits[0]), strings.TrimSpace(splits[1])
+			pathMap[from] = to
+		}
+		for from, to := range pathMap {
+			if strings.Contains(strmUrl, from) {
+				return strings.Replace(strmUrl, from, to, 1)
+			}
+		}
+	}
+	logging.Debugf("替换返回的strm内容=> %s", strmUrl)
+	return strmUrl
+}
+
 // 读取响应体
 //
 // 读取响应体，解压缩 GZIP、Brotli 数据（若响应体被压缩）

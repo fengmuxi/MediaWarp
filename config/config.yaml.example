@@ -48,6 +48,16 @@ HTTPStrm:                                   # HTTPStrm 相关配置（Strm 文�
   PrefixList:                               # EmbyServer 中 Strm 文件的前缀（符合该前缀的 Strm 文件且被正确识别为 HTTP 协议都会路由到该规则下）
     - /media/strm/http
     - /media/strm/https
+    
+  # 路径映射, 将 strm 文件内的路径片段替换成指定路径片段
+  # 可配置多个映射, 每个映射需要有 2 个片段, 使用 [=>] 符号进行分割, 程序自上而下映射第一个匹配的结果
+  # 这个配置的映射是比较灵活的, 不一定必须按照前缀映射, 可以直接将地址中间的片段给替换掉
+  #
+  # 举个栗子
+  # strm 文件内容: https://test-res.com:8094/1.mp4, 替换结果: http://localhost:8095/1.mp4
+  # strm 文件内容: https://test-res.com:12138/test-id-12138.mp4, 替换结果: https://test-res.com:10086/test-id-12138.mp4
+  PathMap:
+    - 123云盘webdav => 123云盘
 
 AlistStrm:                                  # AlistStrm 相关配置（Strm 文件内容是 Alist 上文件的路径，目前仅支持适配 Alist V3）
   Enable: True                              # 是否启用 AlistStrm 重定向

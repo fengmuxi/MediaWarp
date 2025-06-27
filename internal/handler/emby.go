@@ -239,6 +239,8 @@ func (embyServerHandler *EmbyServerHandler) VideosHandler(ctx *gin.Context) {
 			case constants.HTTPStrm:
 				if *mediasource.Protocol == emby.HTTP {
 					redirectURL := *mediasource.Path
+					// 根据配置替换指定项strm内容
+					redirectURL = replaceStrmUrl(redirectURL)
 					if config.HTTPStrm.FinalURL {
 						logging.Debug("HTTPStrm 启用获取最终 URL，开始尝试获取最终 URL")
 						if finalURL, err := getFinalURL(redirectURL, ctx.Request.UserAgent()); err != nil {
