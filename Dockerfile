@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags='-w -s' -a -o /MediaWarp
 FROM alpine:latest
 
 # 从构建阶段复制二进制文件
-COPY --from=builder /MediaWarp /app/MediaWarp
+COPY --from=builder /MediaWarp /MediaWarp
 
 # 设置非root用户运行
 RUN adduser -D -u 1000 MediaWarp
@@ -31,4 +31,4 @@ USER MediaWarp
 EXPOSE 9000
 
 # 启动应用
-CMD ["/app/MediaWarp"]
+CMD ["/MediaWarp"]
